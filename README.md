@@ -1,5 +1,8 @@
 # Debiaswe: try to make word embeddings less sexist
 
+OUR OVERLEAF PRESENTATION: [link](https://www.overleaf.com/9313213497qbbqswfnqctq)
+
+
 &#x1F534;[FAT* 2018 tutorial slides](https://drive.google.com/file/d/1IxIdmreH4qVYnx68QVkqCC9-_yyksoxR/view?usp=sharing)
 
 
