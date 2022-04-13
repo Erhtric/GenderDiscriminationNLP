@@ -1,6 +1,7 @@
 # Debiaswe: try to make word embeddings less sexist
 
 OUR OVERLEAF PRESENTATION: [link](https://www.overleaf.com/9313213497qbbqswfnqctq)
+WORD DOCUMENT: [link](https://liveunibo-my.sharepoint.com/:w:/g/personal/xiaowei_wen_studio_unibo_it/EUR6CGM4caRHho5nWYy32UQBi9_Qem-_FIMEo8Z240AybA?e=yFrORf)
 
 
 &#x1F534;[FAT* 2018 tutorial slides](https://drive.google.com/file/d/1IxIdmreH4qVYnx68QVkqCC9-_yyksoxR/view?usp=sharing)
