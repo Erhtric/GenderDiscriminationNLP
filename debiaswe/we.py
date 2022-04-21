@@ -245,5 +245,9 @@ def doPCA(pairs, embedding, num_components = 10):
     return pca
 
 
-def drop(u, v):
-    return u - v * u.dot(v) / v.dot(v)
+def drop(v, g):
+    """
+    Basically, it computes the projection of the interested word over the gender direction, then, it subtracts from the interested word the latter, in order to
+    collapse all the gender non-specific words to the same value of gender direction. 
+    """
+    return v - g * v.dot(g) / g.dot(g)
