@@ -1,1 +1,8 @@
-[["woman", "man"], ["girl", "boy"], ["she", "he"], ["mother", "father"], ["daughter", "son"], ["gal", "guy"], ["female", "male"], ["her", "his"], ["herself", "himself"], ["Mary", "John"]]
+[
+["lui", "lei"],
+["uomo", "donna"],
+["padre", "madre"],
+["marito", "moglie"],
+["fratello", "sorella"],
+["maschio", "femmina"]
+]

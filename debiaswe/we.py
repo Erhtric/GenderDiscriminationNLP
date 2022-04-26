@@ -126,7 +126,7 @@ class WordEmbedding:
                 else:
                     fout.write(to_utf8("%s %s\n" % (word, ' '.join("%f" % val for val in row))))
 
-    def remove_directions(self, directions): #directions better be orthogonal
+    def remove_directions(self, directions): # directions better be orthogonal
         self.desc += ", removed"
         for direction in directions:
             self.desc += " "
