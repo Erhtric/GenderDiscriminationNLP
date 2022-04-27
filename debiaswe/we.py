@@ -89,7 +89,7 @@ class WordEmbedding:
 
     def diff(self, word1, word2):
         v = self.vecs[self.index[word1]] - self.vecs[self.index[word2]]
-        return v/np.linalg.norm(v)
+        return v/np.linalg.norm(v) if np.linalg.norm(v) > 0 else v
 
     def normalize(self):
         self.desc += ", normalize"
