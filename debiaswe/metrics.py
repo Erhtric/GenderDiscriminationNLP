@@ -1,18 +1,9 @@
 from importlib.resources import path
 import numpy as np
-import argparse
+
 import sys
 import os
-from pkg_resources import parse_requirements
-import scipy
-from scipy.spatial import distance
-#for testing purpose
-
-sys.path.append('../')
-import debiaswe as dwe
-import debiaswe.we as we
-from debiaswe.we import WordEmbedding
-from debiaswe.data import load_professions
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__))))
 
 
 def normalized_attribute_set(attribute_set, embedding_dim):
@@ -23,7 +14,7 @@ def normalized_attribute_set(attribute_set, embedding_dim):
     print(len(attribute_set))
     return sum_att_vector/len(attribute_set)
 
-def pairwise_bias(first_attribute_set,second_attribute_set,embedded_word):
+def pairwise_bias(first_attribute_set, second_attribute_set, embedded_word):
     normalized_first_set = normalized_attribute_set(first_attribute_set,128)
     normalized_second_set = normalized_attribute_set(second_attribute_set,128)
     
@@ -34,7 +25,7 @@ def pairwise_bias(first_attribute_set,second_attribute_set,embedded_word):
 
     return bias_value
 
-def bias_score(embedded_word_set,first_attribute_set,second_attribute_set):
+def bias_score(embedded_word_set, first_attribute_set, second_attribute_set):
     bias_score = 0
     for word in embedded_word_set:
         bias_score += np.abs(pairwise_bias(first_attribute_set,second_attribute_set,word))
@@ -57,8 +48,8 @@ def stereotype_bias_score(embedded_word_set,first_attribute_set,second_attribute
     return (np.sqrt(stereotype_score)/len(embedded_word_set))
 
 if __name__ == "__main__":
-    print(sys.path)
-    E = WordEmbedding('../embeddings/filtered_itwac128.tsv')
+    pass
+    """E = WordEmbedding('../embeddings/filtered_itwac128.tsv')
     female_words = ["lei", "donna", "madre", "moglie", "sorella", "femmina"]
     
     male_words = ["lui", "uomo", "padre", "marito", "fratello", "maschio"]
@@ -73,5 +64,5 @@ if __name__ == "__main__":
     value_single = pairwise_bias(male_set,female_set,emb_words[0])
     print(value_single)
     print(value)
-    print(value_skew)
+    print(value_skew)"""
     

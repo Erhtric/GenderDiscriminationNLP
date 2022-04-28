@@ -180,10 +180,6 @@
         "giornalaia"
     ],
     [
-        "idraulico",
-        "idraulica"
-    ],
-    [
         "impiegato",
         "impiegata"
     ],
@@ -300,10 +296,6 @@
         "poliziotta"
     ],
     [
-        "",
-        "portantina"
-    ],
-    [
         "procuratore",
         "procuratrice"
     ],
@@ -410,5 +402,41 @@
     [
         "zoologo",
         "zoologa"
+    ],
+    [
+        "lui",
+        "lei"
+    ],
+    [
+        "uomo",
+        "donna"
+    ],
+    [
+        "padre",
+        "madre"
+    ],
+    [
+        "marito",
+        "moglie"
+    ],
+    [
+        "fratello",
+        "sorella"
+    ],
+    [
+        "maschio",
+        "femmina"
+    ],
+    [
+        "figlio",
+        "figlia"
+    ],
+    [
+        "nonno",
+        "nonna"
+    ],
+    [
+        "zio",
+        "zia"
     ]
 ]
