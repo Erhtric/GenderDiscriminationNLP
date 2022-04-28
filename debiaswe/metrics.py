@@ -11,7 +11,6 @@ def normalized_attribute_set(attribute_set, embedding_dim):
     for a in attribute_set:
         normalized_a = a/np.linalg.norm(a)
         sum_att_vector += normalized_a
-    print(len(attribute_set))
     return sum_att_vector/len(attribute_set)
 
 def pairwise_bias(first_attribute_set, second_attribute_set, embedded_word):
@@ -19,8 +18,6 @@ def pairwise_bias(first_attribute_set, second_attribute_set, embedded_word):
     normalized_second_set = normalized_attribute_set(second_attribute_set,128)
     
     diff_set = normalized_first_set-normalized_second_set
-    print(type(embedded_word))
-    print(type(diff_set))
     bias_value = np.dot(embedded_word,diff_set) / (np.linalg.norm(embedded_word)*np.linalg.norm(diff_set))
 
     return bias_value
@@ -29,7 +26,6 @@ def bias_score(embedded_word_set, first_attribute_set, second_attribute_set):
     bias_score = 0
     for word in embedded_word_set:
         bias_score += np.abs(pairwise_bias(first_attribute_set,second_attribute_set,word))
-    
     return (bias_score/len(embedded_word_set))
 
 def skew_bias_score(embedded_word_set,first_attribute_set,second_attribute_set):
