@@ -1,4 +1,5 @@
-# :male_sign: Gender bias in Word Embeddings :female_sign:
+# :male_sign: Gender discrimination in Natural Language
+Processing :female_sign:
 
 This repository contains a project realized as part of the *Ethics in Artificial Intelligence* course of the [Master's degree in Artificial Intelligence](https://corsi.unibo.it/2cycle/artificial-intelligence), University of Bologna.
 
