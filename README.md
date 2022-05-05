@@ -1,41 +1,31 @@
-# Debiaswe: try to make word embeddings less sexist
+# :male_sign: Gender bias in Italian Word Embeddings :female_sign:
 
-OUR OVERLEAF PRESENTATION: [link](https://www.overleaf.com/9313213497qbbqswfnqctq)
-WORD DOCUMENT: [link](https://liveunibo-my.sharepoint.com/:w:/g/personal/xiaowei_wen_studio_unibo_it/EUR6CGM4caRHho5nWYy32UQBi9_Qem-_FIMEo8Z240AybA?e=yFrORf)
+This repository contains a project realized as part of the *Ethics in Artificial Intelligence* course of the [Master's degree in Artificial Intelligence](https://corsi.unibo.it/2cycle/artificial-intelligence), University of Bologna.
 
+## Description
 
-&#x1F534;[FAT* 2018 tutorial slides](https://drive.google.com/file/d/1IxIdmreH4qVYnx68QVkqCC9-_yyksoxR/view?usp=sharing)
+The aim of this project is to develop a **proof of concept** about how to address the gender discrimination in NLP.
+Two approaches have been investigated:
+* Hard-Debiasing on pre-trained Italian Word Embeddings
+* GN-GloVe which reduce the bias during the training of word embedidngs
 
+## Versioning
 
-Here we have the code and data for the following paper:
-[Man is to Computer Programmer as Woman is to
-Homemaker? Debiasing Word Embeddings](http://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings.pdf) by 
-Tolga Bolukbasi, Kai-Wei Chang, James Zou, Venkatesh Saligrama, and Adam Kalai. Proceedings of [NIPS 2016](https://papers.nips.cc/paper/6228-man-is-to-computer-programmer-as-woman-is-to-homemaker-debiasing-word-embeddings).
-
-**Just looking to download a debiased embedding?**
-
-You can download [binary](https://drive.google.com/file/d/0B5vZVlu2WoS5ZTBSekpUX0RSNDg/view?usp=sharing&resourcekey=0-qO1UY06KB42G1T6IeJ2XCQ)/[txt](https://drive.google.com/file/d/1_PvT4ZvtZjhq4HPywA8-u06epht9ccOw/view?usp=sharing) hard debiased version of the Google's Word2Vec embedding trained on Google News (Origin: GoogleNews-vectors-negative300.bin.gz found [here](https://code.google.com/archive/p/word2vec/)).
-
-**Python scripts:**
-- **learn_gender_specific.py**: given a word embedding and a seed set of gender-specific words (like <i>king</i>, <i>she</i>, etc.), it learns a much larger list of gender-specific words
-- **debias.py**: given a word embedding, sets of gender-pairs, gender-specific words, and pairs to equalize, it outputs a new word embedding. This version basically reads/writes word2vec binary file format.  
-
-```
-python learn_gender_specific.py ../embeddings/GoogleNews-vectors-negative300.bin 50000 ../data/gender_specific_seed.json gender_specific_full.json
-```
-
-```
-python debias.py ../embeddings/GoogleNews-vectors-negative300.bin ../data/definitional_pairs.json ../data/gender_specific_full.json ../data/equalize_pairs.json ../embeddings/GoogleNews-vectors-negative300-hard-debiased.bin
-```
+We use Git for versioning.
 
 
-We also have seed data used to debias and crowd data used to evaluate the embeddings.
+## Group members
 
-**Data files:**
-- **gender_specific_seed.json**: A list of 218 gender-specific words
-- **gender_specific_full.json**: A list of 1441 gender-specific words
-- **definitional_pairs.json**: The ten pairs of words we use to define the gender direction
-- **equalize_pairs.json**: Some crowdsourced F-M pairs of words that represent gender direction
+|   Name   | Surname |               Email               |                       Username                        |
+| :------: | :-----: | :-------------------------------: | :---------------------------------------------------: |
+| Davide   | Angelani| `davide.angelani@studio.unibo.it` | [_qnozo_](https://github.com/qnozo) |
+|  Eric  | Rossetto | `eric.rossetto@studio.unibo.it`  |        [_Erhtric_](https://github.com/Erhtric)        |
+| Giuseppe |  Murro  | `giuseppe.murro@studio.unibo.it`  |         [_gmurro_](https://github.com/gmurro)         |
+| Salvatore |  Pisciotta  | `salvatore.pisciotta@studio.unibo.it`  |         [_SalvoPisciotta_](https://github.com/SalvoPisciotta)         |
+| Xiaowei |  Wen  | `xiaowei.wen@studio.unibo.it`  |         [_WenXiaowei_](https://github.com/WenXiaowei)         |
 
 
-(All external files that I refer within this repo can be found in [this folder](https://drive.google.com/drive/folders/0B5vZVlu2WoS5dkRFY19YUXVIU2M?resourcekey=0-rZ1HR4Fb0XCi4HFUERGhRA&usp=sharing).)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details

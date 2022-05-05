@@ -1,5 +1,5 @@
 """
-Read the itWac embeddings downloaded from http://www.italianlp.it/resources/italian-word-embeddings/
+Read the twitter embeddings downloaded from http://www.italianlp.it/resources/italian-word-embeddings/
 """
 
 import sqlite3
