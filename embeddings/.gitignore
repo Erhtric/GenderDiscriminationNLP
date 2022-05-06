@@ -1,5 +1,0 @@
-# filter all
-*
-# except .gitignore
-!.gitignore
-

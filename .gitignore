@@ -94,3 +94,8 @@ ENV/
 .ropeproject
 
 .idea/
+
+
+# Files that are too big
+*.pkl
+*.h5
