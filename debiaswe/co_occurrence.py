@@ -1,11 +1,16 @@
 import os
+from tkinter import W
 import numpy as np
 import pickle
-from collections import Counter
+from collections import Counter, defaultdict
 from tqdm import tqdm
 from data import load_text8
 
 PKG_DIR = os.path.dirname(os.path.abspath(__file__))
+
+def DEFUALT_IDX(): return 0
+def DEFAULT_WORD(): return '<UNK>'
+def DEFAULT_GENDER(): return 0
 
 def get_vocab_data(corpus, target_vocab_size=100000):
   """
@@ -14,9 +19,9 @@ def get_vocab_data(corpus, target_vocab_size=100000):
   token_counter = Counter(corpus)
 
   # we can further remove the get_idx method by using instead of a dict a Counter
-  word_to_idx = dict()
+  word_to_idx = defaultdict(DEFUALT_IDX)
   word_to_idx['<UNK>'] = 0
-  idx_to_word = dict()
+  idx_to_word = defaultdict(DEFAULT_WORD)
   idx_to_word[0] = '<UNK>'
 
   for idx, (key, _) in enumerate(tqdm(token_counter.most_common(target_vocab_size-1)), 1):
@@ -25,36 +30,23 @@ def get_vocab_data(corpus, target_vocab_size=100000):
 
   return word_to_idx, idx_to_word
 
-def get_idx(token, word_to_idx):
-  """
-  Checks if a word is in the vocabulary, if so then it returns the associated word, otherwise
-  return the value associated to the unknown word.
-  """
-  if token in word_to_idx:
-    return word_to_idx[token]
-  return word_to_idx['<UNK>']
+def get_gender(id, idx_to_word, gendered_words):
+  return gendered_words[idx_to_word[id]]
 
-def get_gender(target, context, male_idxs, female_idxs):
-  """Label the target with the appropriate gender.
-
-  Args:
-      target (_type_): _description_
-      context (_type_): _description_
-      male_idxs (_type_): _description_
-      female_idxs (_type_): _description_
-
-  Returns:
-      int: the label with the relative gender
-  """
-  if target in male_idxs:
-    return 0
-  if context in male_idxs:
-    return 1
-  if target in female_idxs:
-    return 2
-  if context in female_idxs:
-    return 3
-  return 4
+def get_gender_file():
+  gendered_words = defaultdict(DEFAULT_GENDER)
+  with open(os.path.join(PKG_DIR, '../data/english_data', "gendered_words.txt"), "r") as f:
+    lines = f.readlines()
+    for line in lines:
+      word, gender = line.strip().split(" ")
+      if gender == "n":
+        gender = 0
+      elif gender =="m":
+        gender = 1
+      else:
+        gender = 2
+      gendered_words[word] = gender
+  return gendered_words
 
 def get_en_gender_sets():
   """
@@ -79,12 +71,17 @@ def compute_gender_indexes(male_set, female_set, word_to_idx):
   Returns:
       _type_: _description_
   """
-  male_idxs = np.array(list(filter(lambda n: n != 0, map(lambda x: get_idx(x, word_to_idx), male_words))))
-  female_idxs = np.array(list(filter(lambda n: n != 0, map(lambda x: get_idx(x, word_to_idx), female_words))))
+  male_idxs = np.array(list(filter(lambda n: n != 0, map(lambda x: word_to_idx[x], male_set))))
+  female_idxs = np.array(list(filter(lambda n: n != 0, map(lambda x: word_to_idx[x], female_set))))
   print(f'Number of male words: {male_idxs.shape[0]}, number of female words: {female_idxs.shape[0]}')
   return male_idxs, female_idxs
 
-def partitioned_generate_cooccurrence_matrix(corpus, window_size, word_to_idx, partition_size):
+def partitioned_generate_cooccurrence_matrix(corpus,
+                                            window_size,
+                                            word_to_idx,
+                                            idx_to_word,
+                                            gendered_words,
+                                            partition_size):
   co_occurrences_counter = Counter()
 
   for i in tqdm(range(0, len(corpus), partition_size)):
@@ -98,37 +95,57 @@ def partitioned_generate_cooccurrence_matrix(corpus, window_size, word_to_idx, p
       for j, context_word in enumerate(partition[start:end]):
         if i != j:
           co_occurrences_counter[
-            get_idx(word, word_to_idx),
-            get_idx(context_word, word_to_idx),
+            word_to_idx[word],
+            word_to_idx[context_word],
           ] += 1 / abs(i - j)
 
   # row, col, value, gender
-  co_matrix = np.zeros((len(co_occurrences_counter), 34))
+  co_matrix = np.zeros((len(co_occurrences_counter), 5))
   for n, ((id_word, id_context), value) in enumerate(co_occurrences_counter.items()):
-    gender = get_gender(id_word, id_context)
-    co_matrix[n] = np.array([id_word, id_context, value, gender])
-  
+    gender_target = get_gender(id_word, idx_to_word, gendered_words)
+    gender_context = get_gender(id_context, idx_to_word, gendered_words)
+    co_matrix[n] = np.array([id_word, id_context, value, gender_target, gender_context])
+
   return co_matrix
 
-def generate_cooccurrence_matrix(corpus, window_size, num_partitions):
+def generate_cooccurrence_matrix(corpus, window_size, num_partitions, gendered_words):
   word_to_idx, idx_to_word = get_vocab_data(corpus)
   partition_size = len(corpus)//num_partitions
 
   print(f'Length of the corpus: {len(corpus)}, number of partitions selected: {num_partitions}')
   print(f'Partitions\' size (words): {partition_size}')
 
-  co_occurrence_matrix = partitioned_generate_cooccurrence_matrix(corpus, window_size, word_to_idx, partition_size)
-  
+  co_occurrence_matrix = partitioned_generate_cooccurrence_matrix(corpus,
+                                                                  window_size,
+                                                                  word_to_idx,
+                                                                  idx_to_word,
+                                                                  gendered_words,
+                                                                  partition_size)
+
   # Save to file
-  path = os.path.join(PATH, "cooccurrence_matrix_copy.pkl")
+  path = os.path.join(PKG_DIR, '../data/english_data', f"cooccurrence_matrix_copy_w{window_size}.pkl")
   with open(path, "wb+") as f:
     pickle.dump(co_occurrence_matrix, f)
 
   return co_occurrence_matrix
 
+def load_cooccurrence_matrix(window_size=4, partitions=1700):
+  window_size = 5
+  matrixpath = os.path.join(PKG_DIR, '../data/english_data', f"cooccurrence_matrix_copy_w{window_size}.pkl")
+  if not os.path.isfile(matrixpath):
+    corpus = load_text8()
+    gendered_words = get_gender_file()
+    co_matrix_gender = generate_cooccurrence_matrix(corpus, window_size, partitions, gendered_words)
+    return co_matrix_gender.astype(np.float32)
+  else:
+    with open(matrixpath, 'rb') as f:
+      co_matrix_gender = pickle.load(f)
+      return co_matrix_gender.astype(np.float32)
+
 if __name__ == "__main__":
     corpus = load_text8()
-    word_to_idx, idx_to_word = get_vocab_data(corpus)
-    male_words, female_words = get_en_gender_sets()
-    male_idxs, female_idxs = compute_gender_indexes(male_words, female_words, word_to_idx)
-    print(male_idxs.shape, female_idxs.shape)
+    # word_to_idx, idx_to_word = get_vocab_data(corpus)
+    # male_words, female_words = get_en_gender_sets()
+    # male_idxs, female_idxs = compute_gender_indexes(male_words, female_words, word_to_idx)
+    
+    co_matrix_gender = load_cooccurrence_matrix()
