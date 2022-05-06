@@ -94,8 +94,14 @@ ENV/
 .ropeproject
 
 .idea/
+<<<<<<< Updated upstream
 
 
 # Files that are too big
 *.pkl
 *.h5
+=======
+*.pkl
+>>>>>>> Stashed changes
+*\__pycache__
+embeddings/vectors300.txt

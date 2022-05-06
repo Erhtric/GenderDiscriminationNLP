@@ -33,7 +33,7 @@ def get_vocab_data(corpus, target_vocab_size=100000):
 def get_gender(id, idx_to_word, gendered_words):
   return gendered_words[idx_to_word[id]]
 
-def get_gender_file():
+def get_gender_from_file():
   gendered_words = defaultdict(DEFAULT_GENDER)
   with open(os.path.join(PKG_DIR, '../data/english_data', "gendered_words.txt"), "r") as f:
     lines = f.readlines()
@@ -134,18 +134,10 @@ def load_cooccurrence_matrix(window_size=4, partitions=1700):
   matrixpath = os.path.join(PKG_DIR, '../data/english_data', f"cooccurrence_matrix_copy_w{window_size}.pkl")
   if not os.path.isfile(matrixpath):
     corpus = load_text8()
-    gendered_words = get_gender_file()
+    gendered_words = get_gender_from_file()
     co_matrix_gender = generate_cooccurrence_matrix(corpus, window_size, partitions, gendered_words)
     return co_matrix_gender.astype(np.float32)
   else:
     with open(matrixpath, 'rb') as f:
       co_matrix_gender = pickle.load(f)
       return co_matrix_gender.astype(np.float32)
-
-if __name__ == "__main__":
-    corpus = load_text8()
-    # word_to_idx, idx_to_word = get_vocab_data(corpus)
-    # male_words, female_words = get_en_gender_sets()
-    # male_idxs, female_idxs = compute_gender_indexes(male_words, female_words, word_to_idx)
-    
-    co_matrix_gender = load_cooccurrence_matrix()
