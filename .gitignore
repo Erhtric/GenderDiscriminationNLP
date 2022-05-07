@@ -105,3 +105,4 @@ ENV/
 >>>>>>> Stashed changes
 *\__pycache__
 embeddings/vectors300.txt
+embeddings/glove.6B.300d.txt

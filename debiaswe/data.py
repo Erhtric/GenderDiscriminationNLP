@@ -47,35 +47,16 @@ def load_text8():
 
     return corpus
 
-def default_idx(): return 0
-
-def default_word(): return '<UNK>'
-
-def load_embeddings():
-    path  = os.path.join(PKG_DIR, '../embeddings', 'vectors300.txt')
-    embeddings_dict = dict()
-    embeddings_matrix = []
-    word_to_idx = defaultdict(default_idx)
-    word_to_idx['<UNK>'] = 0
-    idx_to_word = defaultdict(default_word)
-    idx_to_word[0] = '<UNK>'
-
-    with open(path, 'r', encoding='utf-8') as f:
-        for i, item in enumerate(f):
-            lst = item.split(' ', 1)
-            word = lst[0]
-            emb = lst[1].strip('\n').split()
-
-            word_to_idx[word] = i
-            idx_to_word[i] = word
-            embeddings_dict[word] = emb
-            embeddings_matrix.append(emb)
-    f.close()
-
-    return embeddings_dict, np.array(embeddings_matrix), word_to_idx, idx_to_word
-
 def load_embeddings_pandas():
     path  = os.path.join(PKG_DIR, '../embeddings', 'vectors300.txt')
+
+    dt = pd.read_csv(path, sep=" ", header=None)
+    dt.rename(columns={0: 'word'}, inplace=True)
+
+    return dt
+
+def load_glove_embeddings_pandas():
+    path  = os.path.join(PKG_DIR, '../embeddings', 'glove.6B.300d.txt')
 
     dt = pd.read_csv(path, sep=" ", header=None)
     dt.rename(columns={0: 'word'}, inplace=True)
