@@ -43,22 +43,3 @@ def stereotype_bias_score(embedded_word_set,first_attribute_set,second_attribute
 
     return (np.sqrt(stereotype_score)/len(embedded_word_set))
 
-if __name__ == "__main__":
-    pass
-    """E = WordEmbedding('../embeddings/filtered_itwac128.tsv')
-    female_words = ["lei", "donna", "madre", "moglie", "sorella", "femmina"]
-    
-    male_words = ["lui", "uomo", "padre", "marito", "fratello", "maschio"]
-
-
-    female_set = [ E.vecs[E.index[w]] for w in female_words ]
-    male_set = [ E.vecs[E.index[w]] for w in male_words ]
-    words = ["ingegnere","statista","pallacanestro"]
-    emb_words = [ E.vecs[E.index[word]] for word in words]
-    value = bias_score(emb_words,male_set,female_set)
-    value_skew = skew_bias_score(emb_words,male_set,female_set)
-    value_single = pairwise_bias(male_set,female_set,emb_words[0])
-    print(value_single)
-    print(value)
-    print(value_skew)"""
-    
